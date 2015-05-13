@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BlockAir : Block {
-
-    public BlockAir():base(false) {}
+public class UnitHealth : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
