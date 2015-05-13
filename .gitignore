@@ -1,0 +1,5 @@
+RTSPause/Library/
+RTSPause/obj/
+*.csproj
+*.sln
+*.suo
