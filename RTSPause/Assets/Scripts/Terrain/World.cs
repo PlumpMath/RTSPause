@@ -7,12 +7,14 @@ using System.Collections.Generic;
 /// </summary>
 public class World : MonoBehaviour {
 
-    public Dictionary<WorldPos, ITerrainDetails> terrainGrid;
+    public Dictionary<WorldPos, int> terrainGrid;
     public GameObject rock;
 
+    const int IMPASSIBLE = -1;
+
 	// Use this for initialization
-	void Start () {
-        terrainGrid = new Dictionary<WorldPos, ITerrainDetails>();
+	void Awake () {
+        terrainGrid = new Dictionary<WorldPos, int>();
         GenerateTerrain();
 	}
 
@@ -37,6 +39,6 @@ public class World : MonoBehaviour {
         }
         
         Instantiate(rock, temp.ToVector(), Quaternion.identity);
-        
+        terrainGrid[temp] = IMPASSIBLE;
     }
 }

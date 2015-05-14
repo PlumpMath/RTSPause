@@ -2,10 +2,13 @@
 using System.Collections;
 
 public interface IPathfinder{
+    //Properties
+    bool isMoving { get; }
     //Methods
-    void SetGoal(int x, int y);
-    void Step();
+    bool SetGoal(WorldPos pos);
+    void MoveUnit();
     int StepsAwayFromGoal();
-    bool BuildPathTo(int x, int y); // Build the full path
-    bool GetGoal(); // Get the next step goal
+    bool IsAtGoal();
+    bool BuildPathTo(WorldPos pos); // Build the full path
+    bool GetNextStep(); // Get the next step goal
 }
