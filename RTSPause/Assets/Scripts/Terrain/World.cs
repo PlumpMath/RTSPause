@@ -15,7 +15,7 @@ public class World : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         terrainGrid = new Dictionary<WorldPos, int>();
-        GenerateTerrain();
+        //GenerateTerrain();
 	}
 
     void GenerateTerrain() {

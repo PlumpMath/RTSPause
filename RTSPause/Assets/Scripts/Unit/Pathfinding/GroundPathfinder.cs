@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GroundPathfinder : MonoBehaviour, IPathfinder {
+public class GroundPathfinder : MonoBehaviour {
 
     Vector3 stepGoalPos;
     float speed = 1f; //TODO: Should get this from unit stats
