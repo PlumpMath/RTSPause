@@ -29,6 +29,24 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
         PathGrid.Clear();
         PathGrid = new Dictionary<WorldPos, int>(GameController.world.terrainGrid);
     }
+
+    // Abstraction!
+    void SetPathGrid(WorldPos pos, int pathValue) {
+        if (PathGrid.ContainsKey(pos)) {
+            PathGrid.Add(pos, pathValue);
+        } else {
+            PathGrid[pos] = pathValue;
+        }
+    }
+    int GetPathGrid(WorldPos pos) {
+        int outValue;
+        if (PathGrid.TryGetValue(pos, out outValue)) {
+            return outValue;
+        } else {
+            return 0;
+        }
+    }
+    // End abstraction
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,7 +76,7 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
         List<WorldPos> openCells = new List<WorldPos>();
         UpdatePathGrid();
 
-        PathGrid[pos] = STEP_COST;
+        SetPathGrid(pos, STEP_COST);
 
         AddOpenCells(pos, ref openCells);
         
@@ -71,12 +89,10 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
             openCells.RemoveAt(0);
 
             numOfCellsChecked++;
-            if (!PathGrid.ContainsKey(checkCell)) {
+            Debug.Log(GetPathGrid(pos).ToString());
+            if (GetPathGrid(pos) == 0) {
                 numOfCellsChanged++;
-                //if (Test.isDebug) Debug.Log("Pathgrid didn't contain: " + checkCell.ToString());
-                PathGrid.Add(checkCell, CostCell(ref openCells, checkCell));
-            } else {
-                //if (Test.isDebug) Debug.Log("Pathgrid contains: " + checkCell.ToString());
+                SetPathGrid(checkCell, CostCell(ref openCells, checkCell));
             }
             if (checkCell == grid) foundMe = true;
         }
@@ -86,7 +102,20 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
 
         return foundMe;
     }
-
+    private void AddOpenCells(WorldPos pos, ref List<WorldPos> openCells) {
+        if (GetPathGrid(new WorldPos(pos.x - 1, pos.y, pos.z)) == 0) {
+            openCells.Add(new WorldPos(pos.x - 1, pos.y, pos.z));
+        }
+        if (GetPathGrid(new WorldPos(pos.x + 1, pos.y, pos.z)) == 0) {
+            openCells.Add(new WorldPos(pos.x + 1, pos.y, pos.z));
+        }
+        if (GetPathGrid(new WorldPos(pos.x, pos.y, pos.z - 1)) == 0) {
+            openCells.Add(new WorldPos(pos.x, pos.y, pos.z - 1));
+        }
+        if (GetPathGrid(new WorldPos(pos.x, pos.y, pos.z + 1)) == 0) {
+            openCells.Add(new WorldPos(pos.x, pos.y, pos.z + 1));
+        }
+    }
     private int CostCell(ref List<WorldPos> openCells, WorldPos pos) {
         int bestCost = int.MaxValue;
         WorldPos newPos;
@@ -107,27 +136,12 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
     }
 
     private void GetBestCost(ref List<WorldPos> openCells, ref int bestCost, WorldPos pos) {
-        if (PathGrid.ContainsKey(pos)) {
-            if (PathGrid[pos] < bestCost) {
-                bestCost = PathGrid[pos];
+        if (GetPathGrid(pos) > 0) {
+            if (GetPathGrid(pos) < bestCost) {
+                bestCost = GetPathGrid(pos);
             }
         } else {
             openCells.Add(pos);
-        }
-    }
-
-    private void AddOpenCells(WorldPos pos, ref List<WorldPos> openCells) {
-        if (!PathGrid.ContainsKey(new WorldPos(pos.x - 1, pos.y, pos.z))) {
-            openCells.Add(new WorldPos(pos.x - 1, pos.y, pos.z));
-        }
-        if (!PathGrid.ContainsKey(new WorldPos(pos.x + 1, pos.y, pos.z))) {
-            openCells.Add(new WorldPos(pos.x + 1, pos.y, pos.z));
-        }
-        if (!PathGrid.ContainsKey(new WorldPos(pos.x, pos.y, pos.z - 1))) {
-            openCells.Add(new WorldPos(pos.x, pos.y, pos.z - 1));
-        }
-        if (!PathGrid.ContainsKey(new WorldPos(pos.x, pos.y, pos.z + 1))) {
-            openCells.Add(new WorldPos(pos.x, pos.y, pos.z + 1));
         }
     }
     #endregion
@@ -152,7 +166,7 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
     }
 
     public int StepsAwayFromGoal() {
-        return (PathGrid[grid] - 1);
+        return (GetPathGrid(grid) - 1);
     }
 
     public bool IsAtGoal() {
@@ -166,7 +180,7 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
         WorldPos nav = grid;
         WorldPos newPos;
 
-        if (Test.isDebug) Debug.Log("My position is: " + PathGrid[grid].ToString());
+        if (Test.isDebug) Debug.Log("My position is: " + GetPathGrid(grid).ToString());
 
         // Set Nav cardinal
         newPos = new WorldPos(grid.x - 1, grid.y, grid.z);
@@ -202,8 +216,8 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
     // Is lower cost and pathable in cardinal direction ( Up, down, left, right)
     void LowerCostCardinal(WorldPos pos, ref WorldPos nav) {
         if (PathGrid.ContainsKey(pos)) {
-            if (Test.isDebug) Debug.Log("Position checked is: " + PathGrid[pos].ToString());
-            if ((PathGrid[pos] < PathGrid[grid]) && (PathGrid[pos] > 0)) {
+            if (Test.isDebug) Debug.Log("Position checked is: " + GetPathGrid(pos).ToString());
+            if ((GetPathGrid(pos) < GetPathGrid(grid)) && (GetPathGrid(pos) > 0)) {
                 if (!GameController.world.terrainGrid.ContainsKey(pos)) {
                     nav = pos;
                 }
@@ -215,10 +229,10 @@ public class GroundPathfinder : MonoBehaviour, IPathfinder {
     // Not allowed to cut corners
     void LowerCostDiagonal(WorldPos pos, ref WorldPos nav) {
         if (PathGrid.ContainsKey(pos)) {
-            if ((PathGrid[pos] < PathGrid[grid]) &&
-                (PathGrid[pos] > 0) &&
-                (PathGrid.ContainsKey(new WorldPos(grid.x, grid.y, pos.z))) &&
-                (PathGrid.ContainsKey(new WorldPos(pos.x, grid.y, grid.z)))) 
+            if ((GetPathGrid(pos) < GetPathGrid(grid)) &&
+                (GetPathGrid(pos) > 0) &&
+                (GetPathGrid(new WorldPos(grid.x, grid.y, pos.z)) >= 0) &&
+                (GetPathGrid(new WorldPos(pos.x, grid.y, grid.z)) >= 0))
             {
                 if (!GameController.world.terrainGrid.ContainsKey(pos)) {
                     nav = pos;
