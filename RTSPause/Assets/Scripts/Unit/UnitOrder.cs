@@ -1,23 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitOrder : MonoBehaviour, IOrderReceiver {
+public class UnitOrder : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private Order currentOrder;
+    private Unit thisUnit;
 
-    public void MoveOrder(WorldPos pos) {
-        throw new System.NotImplementedException();
+    public void SetOrder(Order order) {
+        currentOrder = order;
+        thisUnit = GetComponent<Unit>();
+        Execute();
     }
 
-    public void AttackOrder(IDamageable unit) {
-        throw new System.NotImplementedException();
+    private void Execute() {
+        if (currentOrder.type == "move") {
+            MoveOrder moveOrder = currentOrder as MoveOrder;
+            thisUnit.MoveTo(moveOrder.target);
+        }
     }
 }

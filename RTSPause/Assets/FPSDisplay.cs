@@ -10,15 +10,15 @@ public class FPSDisplay : MonoBehaviour {
     float nextUpdate = 0.0f;
     float fps = 0.0f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         nextUpdate = Time.time;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update() {
         CountFrame();
-	}
+    }
 
     void OnGUI() {
         if (!isDisplayFPS) return;
@@ -30,8 +30,8 @@ public class FPSDisplay : MonoBehaviour {
         } else {
             GUI.contentColor = Color.red;
         }
-
-        GUI.Label(new Rect(Screen.width - 100, 40, 100, 20), "FPS: " + fps.ToString());
+        GUI.Box(new Rect(Screen.width - 100, 40, 100, 20), "FPS: " + fps.ToString());
+        //GUI.Label(new Rect(Screen.width - 100, 40, 100, 20), "FPS: " + fps.ToString());
     }
 
     private void CountFrame() {
