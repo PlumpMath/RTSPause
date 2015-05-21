@@ -33,7 +33,7 @@ public class UnitMovement : MonoBehaviour, IUnitMovement {
 			if (transform.position == currentWaypoint) {
 				targetIndex ++;
 				if (targetIndex >= path.Length) {
-					yield break;
+					break;
 				}
 				currentWaypoint = path[targetIndex];
 			}
@@ -42,6 +42,8 @@ public class UnitMovement : MonoBehaviour, IUnitMovement {
 			yield return null;
 
 		}
+        // Finished!
+        gameObject.GetComponent<UnitOrder>().OrderFinished();
 	}
 
 	public void OnDrawGizmos() {

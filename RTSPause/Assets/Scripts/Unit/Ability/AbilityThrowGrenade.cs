@@ -3,21 +3,24 @@ using System.Collections;
 
 public class AbilityThrowGrenade: IAbility {
 
-    float range = 15f;
-    float force = 1f;
+    float range = 100f;
     float sqrRange;
     Transform myUnit;
-    public GameObject grenade;
-    public GameObject explosion;
+    static GameObject grenade;
 
-    public AbilityThrowGrenade(Transform myUnit, GameObject prefab) {
+    public static void AssignPrefabs(GameObject prefab) {
+        AbilityThrowGrenade.grenade = prefab;
+    }
+
+    public AbilityThrowGrenade() {
         sqrRange = range * range;
-        this.myUnit = myUnit;
-        this.grenade = prefab;
+        this.myUnit = UnitManager.instance.Selected.transform;
     }
 
     public bool Cast(Vector3 castTo) {
-        if (!InRange(castTo)) return false;
+        if (!InRange(castTo)) {
+            return false;
+        }
         // Cast the ability
         ThrowGrenade(castTo);
         return true;

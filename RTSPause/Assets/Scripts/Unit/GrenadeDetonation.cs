@@ -3,14 +3,13 @@ using System.Collections;
 
 public class GrenadeDetonation : MonoBehaviour {
 
-    private Vector3 destination;
-    private float speed = 3;
+    public GameObject explosion;
 
-	// Use this for initialization
-	void Start () {
-	    
-	}
-	
+    private Vector3 destination;
+    private float speed = 10;
+    private float radius = 5;
+    private int damage = 100;
+
 	// Update is called once per frame
 	void Update () {
         MoveGrenade();
@@ -21,9 +20,19 @@ public class GrenadeDetonation : MonoBehaviour {
 
     private void Detonate() {
         // Sphere to find objects hit
+        Collider[] hits = Physics.OverlapSphere(transform.position, radius);
         // Damage them all
+        foreach (Collider hit in hits) {
+            IDamageable damageable = hit.gameObject.GetInterface<IDamageable>();
+            if (damageable != null) {
+                damageable.TakeDamage(damage);
+            }
+        }
         // Spawn cosmetic explosion
+        Instantiate(explosion, transform.position, Quaternion.Euler(new Vector3(270, 0, 0)));
+        
         // Delete self
+        Destroy(gameObject);
     }
 
     private void MoveGrenade() {

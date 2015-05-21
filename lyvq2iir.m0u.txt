@@ -1,0 +1,27 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is ahead of 'origin/master' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	new file:   RTSPause/Assets/Prefabs/Explosion.prefab
+#	new file:   RTSPause/Assets/Prefabs/Explosion.prefab.meta
+#	modified:   RTSPause/Assets/Prefabs/GameController.prefab
+#	modified:   RTSPause/Assets/Prefabs/Grenade.prefab
+#	modified:   RTSPause/Assets/Scripts/Grid.cs
+#	modified:   RTSPause/Assets/Scripts/Order/MoveOrder.cs
+#	new file:   RTSPause/Assets/Scripts/Order/RandomOrderGenerator.cs
+#	new file:   RTSPause/Assets/Scripts/Order/RandomOrderGenerator.cs.meta
+#	modified:   RTSPause/Assets/Scripts/Order/UseAbilityOrder.cs
+#	new file:   RTSPause/Assets/Scripts/PrefabAssigner.cs
+#	new file:   RTSPause/Assets/Scripts/PrefabAssigner.cs.meta
+#	modified:   RTSPause/Assets/Scripts/Terrain/TerrainHealth.cs
+#	modified:   RTSPause/Assets/Scripts/Unit/Ability/AbilityThrowGrenade.cs
+#	modified:   RTSPause/Assets/Scripts/Unit/GrenadeDetonation.cs
+#	modified:   RTSPause/Assets/Scripts/Unit/UnitMovement.cs
+#	modified:   RTSPause/Assets/Scripts/Unit/UnitOrder.cs
+#	modified:   RTSPause/Assets/Test.unity
+#
+

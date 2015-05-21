@@ -13,5 +13,10 @@ public class UseAbilityOrder : Order {
 
     public override void Execute() {
         bool success = ability.Cast(castTo);
+        if (success) {
+            Debug.Log("Ability succeeded.");
+        } else {
+            Debug.Log("Out of range!");
+        }
     }
 }

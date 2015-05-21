@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
 
+    public static Grid instance;
+
 	public bool displayGridGizmos;
 	public LayerMask unwalkableMask;
 	public Vector2 gridWorldSize;
@@ -14,6 +16,7 @@ public class Grid : MonoBehaviour {
 	int gridSizeX, gridSizeY;
 
 	void Awake() {
+        instance = this;
 		nodeDiameter = nodeRadius*2;
 		gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
 		gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
@@ -25,6 +28,20 @@ public class Grid : MonoBehaviour {
 			return gridSizeX * gridSizeY;
 		}
 	}
+
+    bool willRefresh = false;
+    public void RefreshGrid() {
+        if (!willRefresh) {
+            StartCoroutine(WaitForGridRefresh());
+            willRefresh = true;
+        }
+    }
+
+    IEnumerator WaitForGridRefresh() {
+        yield return null;
+        CreateGrid();
+        willRefresh = false;
+    }
 
 	void CreateGrid() {
 		grid = new Node[gridSizeX,gridSizeY];

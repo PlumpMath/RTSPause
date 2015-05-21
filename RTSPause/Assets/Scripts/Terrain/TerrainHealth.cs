@@ -35,6 +35,9 @@ public class TerrainHealth : MonoBehaviour, IDamageable {
 
     private void Die() {
         Destroy(gameObject);
+        // Tell the path grid to update
+        Debug.Log("Code called.");
+
     }
 
     public void RestoreHealth(int restore) {
