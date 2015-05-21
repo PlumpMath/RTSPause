@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class UnitMovement : MonoBehaviour, IUnitMovement {
 
 
-	float speed = 5;
 	Vector3[] path;
 	int targetIndex;
+
+    IUnitStats stats;
+
+    void Start() {
+        stats = gameObject.GetInterface<IUnitStats>();
+    }
 
     public void MoveTo(Vector3 target) {
         PathRequestManager.RequestPath(transform.position, target, OnPathFound);
@@ -33,7 +38,7 @@ public class Unit : MonoBehaviour {
 				currentWaypoint = path[targetIndex];
 			}
 
-			transform.position = Vector3.MoveTowards(transform.position,currentWaypoint,speed * Time.deltaTime);
+			transform.position = Vector3.MoveTowards(transform.position,currentWaypoint, stats.speed * Time.deltaTime);
 			yield return null;
 
 		}

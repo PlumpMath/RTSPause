@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// Displays the current fps.
+/// Doesn't work with changing timescales.
+/// </summary>
 public class FPSDisplay : MonoBehaviour {
 
     public float updateRate = 4.0f;
@@ -31,7 +36,6 @@ public class FPSDisplay : MonoBehaviour {
             GUI.contentColor = Color.red;
         }
         GUI.Box(new Rect(Screen.width - 100, 40, 100, 20), "FPS: " + fps.ToString());
-        //GUI.Label(new Rect(Screen.width - 100, 40, 100, 20), "FPS: " + fps.ToString());
     }
 
     private void CountFrame() {

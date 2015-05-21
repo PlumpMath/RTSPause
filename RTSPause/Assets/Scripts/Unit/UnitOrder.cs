@@ -4,11 +4,11 @@ using System.Collections;
 public class UnitOrder : MonoBehaviour {
 
     private Order currentOrder;
-    private Unit thisUnit;
+    private UnitMovement thisUnit;
 
     public void SetOrder(Order order) {
         currentOrder = order;
-        thisUnit = GetComponent<Unit>();
+        thisUnit = GetComponent<UnitMovement>();
         Execute();
     }
 
